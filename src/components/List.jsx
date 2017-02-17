@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { ListGroup, ListGroupItem, Image } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Image, Media } from 'react-bootstrap';
 
 class List extends Component {
   render() {
@@ -9,7 +9,7 @@ class List extends Component {
     const styleList = {
       display: 'inline-block',
       position: 'fixed',
-      width: '300px',
+      width: '350px',
       height: '100vh',
       top: 0,
       overflow: 'scroll'
@@ -22,8 +22,16 @@ class List extends Component {
 
     const listItems = data.map((user) =>
       <ListGroupItem key={user.id} onClick={setZoomMap(user)}>
-        <Image src={user.properties.avatar} style={styleImg} circle/>
-        {user.properties.userName}
+        <Media>
+          <Media.Left>
+            <Image src={user.properties.avatar} style={styleImg} circle/>
+          </Media.Left>
+          <Media.Body>
+            <Media.Heading>{user.properties.userName}</Media.Heading>
+            <p>{user.properties.email}</p>
+            <a href={user.properties.url} target="_blank">{user.properties.url}</a>
+          </Media.Body>
+        </Media>
       </ListGroupItem>
     );
 
