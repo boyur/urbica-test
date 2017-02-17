@@ -1,18 +1,21 @@
 import React, {Component} from 'react'
-import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, GeoJSONLayer } from "react-mapbox-gl";
+import myData from './db.json';
 
 class Map extends Component {
   state = {
     lat: 37.766667,
     lng: 44.716667,
-    zoom: 13,
+    zoom: [5]
   };
 
   render() {
     const position = [this.state.lat, this.state.lng];
-    const map = (
+
+    return (
       <ReactMapboxGl
         center={position}
+        zoom={this.state.zoom}
         style="mapbox://styles/mapbox/streets-v8"
         accessToken="pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
         containerStyle={{
@@ -21,14 +24,28 @@ class Map extends Component {
         }}>
         <Layer
           type="symbol"
-          id="marker"
+          id="marker1"
           layout={{ "icon-image": "marker-15" }}>
           <Feature coordinates={position}/>
         </Layer>
+
+
+
+        <Layer
+          type="symbol"
+          id="marker"
+          layout={{ "icon-image": "marker-15" }}>
+          {
+            myData.features.map((user) => (
+              <Feature
+                key={user.id}
+                coordinates={user.geometry.coordinates}
+              />
+            ))
+          }
+        </Layer>
       </ReactMapboxGl>
     );
-
-    return (map);
   }
 }
 
