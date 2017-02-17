@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import ReactMapboxGl, { Layer, Feature, GeoJSONLayer } from "react-mapbox-gl";
-import myData from './db.json';
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
 class Map extends Component {
   state = {
@@ -10,7 +9,9 @@ class Map extends Component {
   };
 
   render() {
+    const {data} = this.props;
     const position = [this.state.lat, this.state.lng];
+
 
     return (
       <ReactMapboxGl
@@ -22,13 +23,13 @@ class Map extends Component {
           height: "100vh",
           width: "100vw"
         }}>
-        <Layer
-          type="symbol"
-          id="marker1"
-          layout={{ "icon-image": "marker-15" }}>
-          <Feature coordinates={position}/>
-        </Layer>
 
+        {/*<Layer*/}
+          {/*type="symbol"*/}
+          {/*id="marker1"*/}
+          {/*layout={{ "icon-image": "marker-15" }}>*/}
+          {/*<Feature coordinates={position}/>*/}
+        {/*</Layer>*/}
 
 
         <Layer
@@ -36,7 +37,7 @@ class Map extends Component {
           id="marker"
           layout={{ "icon-image": "marker-15" }}>
           {
-            myData.features.map((user) => (
+            data.map((user) => (
               <Feature
                 key={user.id}
                 coordinates={user.geometry.coordinates}
