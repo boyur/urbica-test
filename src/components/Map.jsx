@@ -1,24 +1,28 @@
 import React, {Component} from 'react'
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import List from './List'
 
-export default class Map extends Component {
+class Map extends Component {
+
   state = {
     center: [37.766667, 44.716667],
     zoom: [5]
   };
 
-  markerClick = (user) => {
-    console.log(user.geometry.coordinates, user.id);
-    this.setState({
-      center: user.geometry.coordinates,
-      zoom: [14]
-    });
-  };
-
   render() {
     const {data} = this.props;
 
+    const setZoomMap = user => ev => {
+      ev && ev.preventDefault && ev.preventDefault();
+      console.log(user);
+      this.setState({
+        center: user.geometry.coordinates,
+        zoom: [14]
+      });
+    };
+
     return (
+    <div>
       <ReactMapboxGl
         center={this.state.center}
         zoom={this.state.zoom}
@@ -38,12 +42,17 @@ export default class Map extends Component {
               <Feature
                 key={user.id}
                 coordinates={user.geometry.coordinates}
-                onClick={this.markerClick.bind(this, user)}
+                onClick={setZoomMap(user)}
               />
             ))
           }
         </Layer>
       </ReactMapboxGl>
+      <List {...this.props} setZoomMap={setZoomMap}/>
+    </div>
+
     );
   }
 }
+
+export default Map

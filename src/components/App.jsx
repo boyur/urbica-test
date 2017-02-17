@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Map from './Map'
-import List from './List'
 
 class App extends Component {
 
@@ -10,7 +9,6 @@ class App extends Component {
     return (
       <div>
         <Map data={data} />
-        <List data={data} />
       </div>
     );
   }

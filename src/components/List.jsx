@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Image } from 'react-bootstrap';
 class List extends Component {
   render() {
 
-    const {data} = this.props;
+    const {data, setZoomMap} = this.props;
 
     const styleList = {
       display: 'inline-block',
@@ -20,10 +20,10 @@ class List extends Component {
       marginRight: '10px'
     };
 
-    const listItems = data.map((item) =>
-      <ListGroupItem key={item.id}>
-        <Image src={item.properties.avatar} style={styleImg} circle/>
-        {item.properties.userName}
+    const listItems = data.map((user) =>
+      <ListGroupItem key={user.id} onClick={setZoomMap(user)}>
+        <Image src={user.properties.avatar} style={styleImg} circle/>
+        {user.properties.userName}
       </ListGroupItem>
     );
 
@@ -37,4 +37,4 @@ class List extends Component {
   }
 }
 
-export default List;
+export default List
