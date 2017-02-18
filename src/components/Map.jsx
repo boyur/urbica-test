@@ -20,7 +20,6 @@ class Map extends Component {
     };
 
     const setZoomMap = user => ev => {
-      ev && ev.preventDefault && ev.preventDefault();
       console.log(user);
       this.setState({
         center: user.geometry.coordinates,
