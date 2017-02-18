@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/romabelka/js_ru_30_01_19_30"
+    "url": "git+https://github.com/boyur/urbica-test"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/romabelka/js_ru_30_01_19_30"
+    "url": "https://github.com/boyur/urbica-test"
   },
-  "homepage": "https://github.com/romabelka/js_ru_30_01_19_30",
+  "homepage": "https://github.com/boyur/urbica-test",
   "devDependencies": {
     "babel-core": "^6.13.2",
     "babel-loader": "^6.2.4",
