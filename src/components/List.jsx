@@ -12,7 +12,8 @@ class List extends Component {
       width: '350px',
       height: '100vh',
       top: 0,
-      overflow: 'scroll'
+      overflow: 'scroll',
+      zIndex: 10
     };
 
     const styleImg = {
