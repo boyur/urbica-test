@@ -7,12 +7,17 @@ class Map extends Component {
 
   state = {
     center: [37.766667, 44.716667],
-    zoom: [5],
-    popupShowLabel: true
+    zoom: [3],
+    popupStatus: false
   };
 
   render() {
     const {data} = this.props;
+
+    const styleImg = {
+      width: '50px',
+      marginRight: '10px'
+    };
 
     const setZoomMap = user => ev => {
       ev && ev.preventDefault && ev.preventDefault();
@@ -20,12 +25,17 @@ class Map extends Component {
       this.setState({
         center: user.geometry.coordinates,
         zoom: [14],
+        popupStatus: true,
         user
       });
     };
 
-    const popupChange = (popupShowLabel) => {
-      this.setState({ popupShowLabel });
+    const resetZoomMap = () => {
+      this.setState({
+        center: [37.766667, 44.716667],
+        zoom: [3],
+        popupStatus: false
+      });
     };
 
     return (
@@ -57,12 +67,12 @@ class Map extends Component {
 
         {
           this.state.user && (
-            <PopupMap {...this.props} {...this.state} popupChange={popupChange}/>
+            <PopupMap {...this.props} {...this.state} styleImg={styleImg} resetZoomMap={resetZoomMap}/>
           )
         }
 
       </ReactMapboxGl>
-      <List {...this.props} setZoomMap={setZoomMap}/>
+      <List {...this.props} styleImg={styleImg} setZoomMap={setZoomMap}/>
     </div>
 
     );

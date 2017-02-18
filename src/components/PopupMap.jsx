@@ -1,35 +1,45 @@
 import React, {Component} from 'react'
+import { unmountComponentAtNode } from 'react-dom'
 import { Popup } from "react-mapbox-gl"
+import { Image, Button } from 'react-bootstrap'
 
 class PopupMap extends Component {
 
   render() {
-    const {user, popupShowLabel, popupChange} = this.props;
+    const {user, popupStatus, resetZoomMap, styleImg} = this.props;
 
     const stylePopup = {
       background: "#fff",
       padding: "5px",
-      borderRadius: "2px"
+      borderRadius: "2px",
+      textAlign: "center"
     };
 
-    return (
+    const popup = (
       <Popup
         key={user.id}
-        offset={[0, -50]}
+        offset={[0, -120]}
         coordinates={user.geometry.coordinates}>
-        <div>
-            <span style={{stylePopup, display: popupShowLabel ? "block" : "none"}}>
-              {user.properties.userName}
-            </span>
-            <div onClick={popupChange.bind(this, !popupShowLabel)}>
-              {
-                popupShowLabel ? "Hide" : "Show"
-              }
+        <div style={stylePopup}>
+          <div>
+            <div>
+              <Image src={user.properties.avatar} style={styleImg} circle/>
             </div>
+            <p>{user.properties.userName}</p>
+            <p>{user.properties.email}</p>
+            <a href={user.properties.url} target="_blank">{user.properties.url}</a>
+          </div>
+          <Button bsSize="xsmall" onClick={resetZoomMap}>
+            Hide
+          </Button>
         </div>
-      </Popup>
-    )
+      </Popup>);
 
+    return (
+      <div>
+        {popupStatus ? popup : null}
+      </div>
+    )
   }
 }
 
