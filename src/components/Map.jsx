@@ -1,23 +1,35 @@
 import React, {Component} from 'react'
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Popup } from "react-mapbox-gl";
 import List from './List'
 
 class Map extends Component {
 
   state = {
     center: [37.766667, 44.716667],
-    zoom: [5]
+    zoom: [5],
+    popupShowLabel: true
   };
 
   render() {
     const {data} = this.props;
 
+    const stylePopup = {
+      background: "#fff",
+      padding: "5px",
+      borderRadius: "2px"
+    };
+
     const setZoomMap = user => ev => {
       console.log(user);
       this.setState({
         center: user.geometry.coordinates,
-        zoom: [14]
+        zoom: [14],
+        user
       });
+    };
+
+    const popupChange = (popupShowLabel) => {
+      this.setState({ popupShowLabel });
     };
 
     return (
@@ -46,6 +58,30 @@ class Map extends Component {
             ))
           }
         </Layer>
+
+        {
+          this.state.user && (
+            <Popup
+              key={this.state.user.id}
+              offset={[0, -50]}
+              coordinates={this.state.center}>
+              <div>
+                  <span style={{
+                    stylePopup,
+                    display: this.state.popupShowLabel ? "block" : "none"
+                  }}>
+                    {this.state.user.properties.userName}
+                  </span>
+                <div onClick={popupChange.bind(this, !this.state.popupShowLabel)}>
+                  {
+                    this.state.popupShowLabel ? "Hide" : "Show"
+                  }
+                </div>
+              </div>
+            </Popup>
+          )
+        }
+
       </ReactMapboxGl>
       <List {...this.props} setZoomMap={setZoomMap}/>
     </div>
