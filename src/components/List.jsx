@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { ListGroup, ListGroupItem, Image, Media } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Image, Media } from 'react-bootstrap'
 
 class List extends Component {
   render() {

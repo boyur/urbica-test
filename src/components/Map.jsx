@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import ReactMapboxGl, { Layer, Feature, Popup } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl"
 import List from './List'
+import PopupMap from './PopupMap'
 
 class Map extends Component {
 
@@ -13,13 +14,8 @@ class Map extends Component {
   render() {
     const {data} = this.props;
 
-    const stylePopup = {
-      background: "#fff",
-      padding: "5px",
-      borderRadius: "2px"
-    };
-
     const setZoomMap = user => ev => {
+      ev && ev.preventDefault && ev.preventDefault();
       console.log(user);
       this.setState({
         center: user.geometry.coordinates,
@@ -61,24 +57,7 @@ class Map extends Component {
 
         {
           this.state.user && (
-            <Popup
-              key={this.state.user.id}
-              offset={[0, -50]}
-              coordinates={this.state.center}>
-              <div>
-                  <span style={{
-                    stylePopup,
-                    display: this.state.popupShowLabel ? "block" : "none"
-                  }}>
-                    {this.state.user.properties.userName}
-                  </span>
-                <div onClick={popupChange.bind(this, !this.state.popupShowLabel)}>
-                  {
-                    this.state.popupShowLabel ? "Hide" : "Show"
-                  }
-                </div>
-              </div>
-            </Popup>
+            <PopupMap {...this.props} {...this.state} popupChange={popupChange}/>
           )
         }
 
