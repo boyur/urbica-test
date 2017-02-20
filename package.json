@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npm run dev",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
+    "server": "node server.js",
     "dev": "webpack-dev-server --hot --inline",
     "build": "webpack"
   },
@@ -26,6 +27,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.26.1",
     "faker": "^3.1.0",
+    "fetch": "^1.1.0",
     "json-server": "^0.9.5",
     "normalize.css": "^5.0.0",
     "react-bootstrap": "^0.30.7",
@@ -34,8 +36,11 @@
     "webpack-dev-server": "^2.0.0"
   },
   "dependencies": {
+    "json-server": "^0.9.5",
+    "node-fetch": "^1.6.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-mapbox-gl": "^1.2.0"
+    "react-mapbox-gl": "^1.2.0",
+    "whatwg-fetch": "^2.0.2"
   }
 }
