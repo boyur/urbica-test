@@ -4,8 +4,4 @@ import App from './components/App'
 
 import 'normalize.css'
 
-fetch('http://localhost:3030/features')
-  .then(res => res.json())
-  .then(data =>
-    render(<App data={data.features}/>, document.getElementById('container'))
-  );
+render(<App/>, document.getElementById('container'))

@@ -8,12 +8,27 @@ class Map extends Component {
   state = {
     center: [37.766667, 44.716667],
     zoom: [3],
-    popupStatus: false
+    popupStatus: false,
+    isLoaded: false,
+    data: {}
   };
 
-  render() {
-    const {data} = this.props;
+  loadedData = (url) => {
+  fetch(url)
+    .then(res => res.json())
+    .then(data =>
+      this.setState({
+        isLoaded: true,
+        data
+      })
+    );
+};
 
+  componentDidMount() {
+    this.loadedData('http://localhost:3030/features');
+  }
+
+  render() {
     const styleImg = {
       width: '50px',
       marginRight: '10px'
@@ -23,7 +38,7 @@ class Map extends Component {
       console.log(user);
       this.setState({
         center: user.geometry.coordinates,
-        zoom: [14],
+        zoom: [13],
         popupStatus: true,
         user
       });
@@ -49,20 +64,24 @@ class Map extends Component {
           width: "100vw"
         }}>
 
-        <Layer
-          type="symbol"
-          id="marker"
-          layout={{ "icon-image": "marker-15" }}>
-          {
-            data.map((user) => (
-              <Feature
-                key={user.id}
-                coordinates={user.geometry.coordinates}
-                onClick={setZoomMap(user)}
-              />
-            ))
-          }
-        </Layer>
+        {
+          this.state.isLoaded && (
+            <Layer
+            type="symbol"
+            id="marker"
+            layout={{ "icon-image": "marker-15" }}>
+            {
+              this.state.data.features.map((user) => (
+                <Feature
+                  key={user.id}
+                  coordinates={user.geometry.coordinates}
+                  onClick={setZoomMap(user)}
+                />
+              ))
+            }
+            </Layer>
+          )
+        }
 
         {
           this.state.user && (
@@ -71,7 +90,7 @@ class Map extends Component {
         }
 
       </ReactMapboxGl>
-      <List {...this.props} styleImg={styleImg} setZoomMap={setZoomMap}/>
+      {/*<List {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap}/>*/}
     </div>
 
     );

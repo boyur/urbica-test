@@ -21,7 +21,7 @@ class List extends Component {
       marginRight: '10px'
     };
 
-    const listItems = data.map((user) =>
+    const listItems = data.features.map((user) =>
       <ListGroupItem key={user.id} onClick={setZoomMap(user)}>
         <Media>
           <Media.Left>

@@ -4,11 +4,10 @@ import Map from './Map'
 class App extends Component {
 
   render() {
-    const {data} = this.props;
 
     return (
       <div>
-        <Map data={data} />
+        <Map/>
       </div>
     );
   }
