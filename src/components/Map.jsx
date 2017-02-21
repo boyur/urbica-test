@@ -12,6 +12,29 @@ class Map extends Component {
       center: [20, 40],
       zoom: 1.2,
     });
+
+    this.map.on('load', () => {
+      this.map.on('click', (e) => {
+
+        let features = this.map.queryRenderedFeatures(e.point, { layers: ['marker'] });
+
+        if (!features.length) return;
+
+        let feature = features[0];
+
+        let popup = new mapboxgl.Popup()
+          .setLngLat(feature.geometry.coordinates)
+          .setHTML(feature.properties.userName)
+          .addTo(this.map);
+      });
+
+      this.map.on('mousemove', (e) => {
+        let features = this.map.queryRenderedFeatures(e.point, { layers: ['marker'] });
+        this.map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+      });
+    });
+
+
   }
 
   addMaerkers = (data) => {
@@ -27,9 +50,9 @@ class Map extends Component {
             "features": data
           }
         },
-        "layout": { "icon-image": "marker-15"}
+        "layout": { "icon-image": "marker-15", "icon-size": 1.3}
       });
-    })
+    });
   };
 
 
