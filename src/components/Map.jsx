@@ -1,108 +1,54 @@
 import React, {Component} from 'react'
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl"
-import List from './List'
-import PopupMap from './PopupMap'
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 class Map extends Component {
 
-  state = {
-    center: [37.766667, 44.716667],
-    zoom: [3],
-    popupStatus: false,
-    isLoaded: false,
-    data: {}
-  };
-
-  loadedData = (url) => {
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      console.log("isLoaded...")
-      this.setState({
-        isLoaded: true,
-        data
-      })
-    }
-
-    );
-};
-
-  componentWillMount() {
-    console.log("componentWillMount - Map.jsx");
-    this.loadedData('http://localhost:3030/features');
+  componentDidMount() {
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A';
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v9',
+      center: [20, 40],
+      zoom: 1.2,
+    });
   }
 
+  addMaerkers = (data) => {
+    console.log(data);
+    this.map.on('load', () => {
+      this.map.addLayer({
+        "id": "marker",
+        "type": "symbol",
+        "source": {
+          "type": "geojson",
+          "data": {
+            "type": "FeatureCollection",
+            "features": data
+          }
+        },
+        "layout": { "icon-image": "marker-15"}
+      });
+    })
+  };
+
+
+
   render() {
-    console.log("Render - Map.jsx");
-    const styleImg = {
-      width: '50px',
-      marginRight: '10px'
-    };
+      const {data, resetZoomMap, isLoaded} = this.props;
 
-    const setZoomMap = user => ev => {
-      console.log(user);
-      this.setState({
-        center: user.geometry.coordinates,
-        zoom: [13],
-        popupStatus: true,
-        user
-      });
-    };
 
-    const resetZoomMap = () => {
-      this.setState({
-        center: [37.766667, 44.716667],
-        zoom: [3],
-        popupStatus: false
-      });
-    };
+      isLoaded ? this.addMaerkers(data) : null;
 
-    return (
-    <div>
-      <ReactMapboxGl
-        center={this.state.center}
-        zoom={this.state.zoom}
-        style="mapbox://styles/mapbox/streets-v8"
-        accessToken="pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A"
-        containerStyle={{
-          height: "100vh",
-          width: "100vw"
-        }}>
-
-        {
-          this.state.isLoaded && (
-            <Layer
-            type="symbol"
-            id="marker"
-            layout={{ "icon-image": "marker-15" }}>
-            {
-              this.state.data.features.map((user) => (
-                <Feature
-                  key={user.id}
-                  coordinates={user.geometry.coordinates}
-                  onClick={setZoomMap(user)}
-                />
-              ))
-            }
-            </Layer>
-          )
+      const styles = {
+        map: {
+          height: '100vh',
+          width: '100vw',
+          zIndex: 0
         }
+      };
 
-        {
-          this.state.user && (
-            <PopupMap {...this.props} {...this.state} styleImg={styleImg} resetZoomMap={resetZoomMap}/>
-          )
-        }
-
-      </ReactMapboxGl>
-      {
-        this.state.isLoaded && (
-          <List {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap}/>
-        )
-      }
-    </div>
-
-    );
+    return <div id="map" style={styles.map} />;
   }
 }
 
