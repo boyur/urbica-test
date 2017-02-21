@@ -16,19 +16,24 @@ class Map extends Component {
   loadedData = (url) => {
   fetch(url)
     .then(res => res.json())
-    .then(data =>
+    .then(data => {
+      console.log("isLoaded...")
       this.setState({
         isLoaded: true,
         data
       })
+    }
+
     );
 };
 
-  componentDidMount() {
+  componentWillMount() {
+    console.log("componentWillMount - Map.jsx");
     this.loadedData('http://localhost:3030/features');
   }
 
   render() {
+    console.log("Render - Map.jsx");
     const styleImg = {
       width: '50px',
       marginRight: '10px'
@@ -90,7 +95,11 @@ class Map extends Component {
         }
 
       </ReactMapboxGl>
-      {/*<List {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap}/>*/}
+      {
+        this.state.isLoaded && (
+          <List {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap}/>
+        )
+      }
     </div>
 
     );
