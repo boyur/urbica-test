@@ -9,6 +9,8 @@ class Map extends Component {
   };
 
   componentDidMount() {
+    console.log('Начинаю грузить карту...');
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A';
     this.map = new mapboxgl.Map({
       container: 'map',
@@ -19,7 +21,7 @@ class Map extends Component {
 
     this.map.on('load', () => {
 
-      console.log('map loaded');
+      console.log('Карта загруженна...');
 
       this.setState({
         mapLoaded: true

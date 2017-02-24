@@ -21,13 +21,13 @@ class App extends Component {
             isLoaded: true,
             data: data.features
           });
-        }, 6000);
+        }, 5000);
       })
     };
 
     componentWillMount() {
       console.log("componentWillMount - App.jsx");
-      this.loadedData('http://localhost:3030/features');
+      this.loadedData('http://dev.boyur.net:3030/features');
   }
 
   render() {
