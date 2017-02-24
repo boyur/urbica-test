@@ -4,6 +4,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 class Map extends Component {
 
+  state = {
+    mapLoaded: false
+  };
+
   componentDidMount() {
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmFicmljOCIsImEiOiJjaWc5aTV1ZzUwMDJwdzJrb2w0dXRmc2d0In0.p6GGlfyV-WksaDV_KdN27A';
     this.map = new mapboxgl.Map({
@@ -14,6 +18,13 @@ class Map extends Component {
     });
 
     this.map.on('load', () => {
+
+      console.log('map loaded');
+
+      this.setState({
+        mapLoaded: true
+      });
+
       this.map.on('click', (e) => {
 
         let features = this.map.queryRenderedFeatures(e.point, { layers: ['marker'] });
@@ -29,8 +40,10 @@ class Map extends Component {
       });
 
       this.map.on('mousemove', (e) => {
+        if (!this.props.isLoaded) return;
+
         let features = this.map.queryRenderedFeatures(e.point, { layers: ['marker'] });
-        this.map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+        this.map.getCanvas().style.cursor = (features && features.length) ? 'pointer' : '';
       });
     });
 
@@ -38,8 +51,7 @@ class Map extends Component {
   }
 
   addMaerkers = (data) => {
-    console.log(data);
-    this.map.on('load', () => {
+    console.log('Loaded markers...');
       this.map.addLayer({
         "id": "marker",
         "type": "symbol",
@@ -52,7 +64,6 @@ class Map extends Component {
         },
         "layout": { "icon-image": "marker-15", "icon-size": 1.3}
       });
-    });
   };
 
 
@@ -61,17 +72,32 @@ class Map extends Component {
       const {data, resetZoomMap, isLoaded} = this.props;
 
 
-      isLoaded ? this.addMaerkers(data) : null;
+      isLoaded && this.state.mapLoaded ? this.addMaerkers(data) : null;
 
       const styles = {
         map: {
           height: '100vh',
           width: '100vw',
           zIndex: 0
+        },
+        preload: {
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          fontSize: '32px'
         }
       };
 
-    return <div id="map" style={styles.map} />;
+    return (
+      <div>
+        <div id="map" style={styles.map}/>
+        {
+          !isLoaded &&
+          <div style={styles.preload}>Loading data...</div>
+        }
+      </div>
+    );
   }
 }
 

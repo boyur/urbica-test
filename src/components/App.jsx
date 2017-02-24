@@ -11,23 +11,27 @@ class App extends Component {
   };
 
   loadedData = (url) => {
+    console.log("Loading...");
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        console.log("isLoaded...");
-        this.setState({
-          isLoaded: true,
-          data: data.features
-        });
+        setTimeout(() => {
+          console.log("isLoaded...");
+          this.setState({
+            isLoaded: true,
+            data: data.features
+          });
+        }, 6000);
       })
     };
 
     componentWillMount() {
-      console.log("componentWillMount - MapOld.jsx");
+      console.log("componentWillMount - App.jsx");
       this.loadedData('http://localhost:3030/features');
   }
 
   render() {
+    console.log("render app");
 
     const styleImg = {
       width: '50px',
