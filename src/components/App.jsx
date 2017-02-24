@@ -58,8 +58,8 @@ class App extends Component {
 
     return (
       <div>
-        <Map {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap} resetZoomMap={resetZoomMap}/>
-        <List {...this.props} {...this.state} styleImg={styleImg} setZoomMap={setZoomMap} resetZoomMap={resetZoomMap}/>
+        <Map {...this.state} styleImg={styleImg} setZoomMap={setZoomMap} resetZoomMap={resetZoomMap}/>
+        <List {...this.state} styleImg={styleImg} setZoomMap={setZoomMap} resetZoomMap={resetZoomMap}/>
       </div>
     );
   }
